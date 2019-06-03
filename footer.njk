@@ -1,0 +1,100 @@
+{% from 'blocks/subscribe/subscribe.njk' import subscribe %}
+{% from "blocks/core/button/button.njk" import button %}
+
+{% macro footer(data) -%}
+  <footer class="footer">
+    {% if data.wraps %}
+      <div class="footer__links-wrp">
+        <div class="container">
+          {% for wrap in data.wraps %}
+            <div class="footer__links">
+              {% if wrap.sections %}
+                {% for section in wrap.sections %}
+                  <div class="footer__section">
+                    <div class="footer__block">
+                      {% if section.list_items %}
+                        {% for item in section.list_items %}
+                          <div class="footer__link-title">
+                            <a class="footer__link footer__link--main"
+                               href="{{ item.url }}">{{ item.text }}</a>
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                      {% if section.cols %}
+                        <div class="footer__col-wrapper">
+                          {% for col in section.cols %}
+                            <ul class="footer__col">
+                              {% for link in col %}
+                                {% if link.noHover %}
+                                  <li class="footer__col-item">
+                                    <div class="footer__link footer__link--no-hover">{{ link.noHover.title }}</div>
+                                  </li>
+                                  <li class="footer__col-item">
+                                    <div class="footer__link footer__link--no-hover">
+                                      <a href="tel:{{ link.noHover.phone.url }}"
+                                         class="footer__link footer__link--no-hover comagic_phone">{{ link.noHover.phone.text }}</a>
+                                    </div>
+                                  </li>
+                                  <li class="footer__col-item">
+                                    <div class="footer__link footer__link--no-hover">{{ link.noHover.timeWork }}</div>
+                                  </li>
+                                {% else %}
+                                  <li class="footer__col-item">
+                                    <a class="footer__link {% if link.main %} footer__link--main {% endif %}"
+                                       href="{{ link.url }}">{{ link.text }} </a>
+                                  </li>
+                                {% endif %}
+                              {% endfor %}
+                            </ul>
+                          {% endfor %}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="footer__bottom-wrp">
+      <div class="container">
+        <div class="footer__bottom">
+          <div class="footer__phone">
+            <div class="footer__phone-num comagic_phone">
+              <a href="tel:{{ data.bottom.phone.url }}" class="comagic_phone">{{ data.bottom.phone.text }}</a>
+            </div>
+            {{ button('a', 'Позвоните мне', 'button--call-me button-animation button-animation--dark') }}
+            <div class="footer__copyrights">
+              <div class="footer__copyrights-rights">
+                {{ data.bottom.copyrights.rights | safe }}
+              </div>
+              <a class="footer__copyrights-personal-info"
+                 href="{{ data.privacyPolicy }}">{{ data.bottom.copyrights.info }}</a>
+            </div>
+          </div>
+          <div class="footer__social">
+            <div class="footer__social-title">{{ data.bottom.social.title }}</div>
+            <div class="footer__social-links">
+              {% for link in data.bottom.social.links %}
+                <a class="footer__social-link"
+                   href="{{ link.url }}"
+                   target="_blank">
+                  <svg>
+                    <use xlink:href="/static/assets/svg/sprite.svg#{{ link.svg }}"></use>
+                  </svg>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+          {{ subscribe(data.subscribe, data.privacyPolicy ,'footer__subscribe subscribe--footer', 'footer__subscribe-form subscribe-form--footer') }}
+        </div>
+        <div class="footer__law-info">{{ data.bottom.lawText.main }}<a
+                  href="{{ data.privacyPolicy }}">{{ data.bottom.lawText.atLink }}</a>.
+        </div>
+      </div>
+    </div>
+  </footer>
+{% endmacro %}
